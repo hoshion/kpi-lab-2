@@ -1,4 +1,4 @@
-module github.com/just-hoshinon/kpi-lab-2
+module kpi_lab_2
 
 go 1.20
 

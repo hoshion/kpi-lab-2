@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	lab2 "github.com/just-hoshinon/kpi-lab-2"
+	lib "kpi_lab_2"
 )
 
 var (
@@ -22,6 +22,10 @@ func main() {
 	//       }
 	//       err := handler.Compute()
 
-	res, _ := lab2.PrefixToPostfix("+ 2 2")
-	fmt.Println(res)
+	res, err := lib.PostfixToInfix("4 2 - 3 * 5 +")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(res)
+	}
 }
