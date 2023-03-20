@@ -14,8 +14,8 @@ func TestPrefixToPostfix(t *testing.T) {
 	}
 }
 
-// ExamplePrefixToPostfix
-func ExampleF() {
+// ExampleF
+func ExamplePrefixToPostfix() {
 	res, _ := PostfixToInfix("+ 2 2")
 	fmt.Println(res)
 
