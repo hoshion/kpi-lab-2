@@ -10,6 +10,7 @@ var (
 	operators = "-+*/^"
 )
 
+// Node is an element of an oriented tree (the structure used for representing mathematical formula in different ways)
 type Node struct {
 	value  string
 	left   *Node
@@ -17,6 +18,7 @@ type Node struct {
 	parent *Node
 }
 
+// ParseSymbol creates oriented tree structure, that contains mathematical formula
 func ParseSymbol(strs []string, parent *Node, index *int) *Node {
 	node := &Node{
 		strs[*index],
@@ -53,6 +55,7 @@ func ParseSymbol(strs []string, parent *Node, index *int) *Node {
 	return node
 }
 
+// IsBracket checks weather there should be a bracket in the infix variant or not
 func IsBracket(value string, parentValue string) bool {
 	if strings.ContainsAny(value, "-+") && strings.ContainsAny(parentValue, "*/^") {
 		return true
@@ -64,6 +67,7 @@ func IsBracket(value string, parentValue string) bool {
 	return false
 }
 
+// ParseNode creates infix variant of formula
 func ParseNode(node *Node, result *string) {
 	if node.parent != nil && IsBracket(node.value, node.parent.value) {
 		*result += "( "
@@ -80,6 +84,7 @@ func ParseNode(node *Node, result *string) {
 	}
 }
 
+// PostfixToInfix transforms postfix mathematical formula into natural infix variant.
 func PostfixToInfix(input string) (string, error) {
 	if len(input) == 0 {
 		return "", errors.New("string is empty")
