@@ -107,5 +107,5 @@ func PostfixToInfix(input string) (string, error) {
 
 	ParseNode(root, &result)
 
-	return result, nil
+	return strings.TrimSpace(result), nil
 }
