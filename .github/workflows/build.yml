@@ -1,0 +1,21 @@
+name: CiCd
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+            go-version: '1.18.0'
+      - name: Install dependencies
+        run: go mod tidy
+#go get -u golang.org/x/lint/golint
+      - name: Run build
+        run: make out/example
+      - name: Run testing
+        run: make test
