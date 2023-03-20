@@ -16,7 +16,7 @@ jobs:
         run: |
           go version
           go mod tidy
-          go get -u golang.org/x/lint/golint
+#go get -u golang.org/x/lint/golint
       - name: Run build
         run: go build .
       - name: Run vet & lint
