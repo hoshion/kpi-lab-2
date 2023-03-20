@@ -96,7 +96,7 @@ func PostfixToInfix(input string) (string, error) {
 		if len(value) != 1 {
 			_, err := strconv.Atoi(value)
 			if err != nil {
-				return "", errors.New("it's not a number")
+				return "", errors.New("it's not a number or operator")
 			}
 		} else if !strings.ContainsAny(value, "0123456789+-*/^") {
 			return "", errors.New("it's not a number or operator")
