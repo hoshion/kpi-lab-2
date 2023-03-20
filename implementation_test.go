@@ -32,6 +32,16 @@ func TestPostfixToInfix(t *testing.T) {
 	if assert.Nil(t, err) {
 		assert.Equal(t, "( 7 + 2 ) * ( 4 * ( 7 + 9 ) ) ^ ( 9 + 3 )", res)
 	}
+
+	res, err = PostfixToInfix("")
+	if err == nil {
+		assert.Equal(t, "it's not a number or operator", err)
+	}
+
+	res, err = PostfixToInfix("?;\"%\":\"№?")
+	if err == nil {
+		assert.Equal(t, "it's not a number or operator", err)
+	}
 }
 
 func ExamplePostfixToInfix() {
