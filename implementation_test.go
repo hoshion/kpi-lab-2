@@ -8,9 +8,29 @@ import (
 )
 
 func TestPostfixToInfix(t *testing.T) {
-	res, err := PostfixToInfix("4 2 - 3 * 5 +")
+	res, err := PostfixToInfix("7 3 +")
 	if assert.Nil(t, err) {
-		assert.Equal(t, "( 4 - 2 ) * 3 + 5 ", res)
+		assert.Equal(t, "7 + 3", res)
+	}
+
+	res, err = PostfixToInfix("4 2 + 1 -")
+	if assert.Nil(t, err) {
+		assert.Equal(t, "4 + 2 - 1", res)
+	}
+
+	res, err = PostfixToInfix("3 6 + 9 2 - *")
+	if assert.Nil(t, err) {
+		assert.Equal(t, "( 3 + 6 ) * ( 9 - 2 )", res)
+	}
+
+	res, err = PostfixToInfix("4 2 - 3 * 5 +")
+	if assert.Nil(t, err) {
+		assert.Equal(t, "( 4 - 2 ) * 3 + 5", res)
+	}
+
+	res, err = PostfixToInfix("7 2 + 4 7 9 + * 9 3 + ^ *")
+	if assert.Nil(t, err) {
+		assert.Equal(t, "( 7 + 2 ) * ( 4 * ( 7 + 9 ) ) ^ ( 9 + 3 )", res)
 	}
 }
 
