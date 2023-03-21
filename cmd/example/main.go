@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	lib "kpi_lab_2"
+	"os"
 )
 
 var (
@@ -46,6 +48,24 @@ func main() {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println(res)
+		if *outputExpression == "" {
+			fmt.Println(res)
+		} else {
+			fmt.Println(*outputExpression)
+			file, ferr := os.Create(*outputExpression)
+			fmt.Println(file)
+			if ferr != nil {
+				panic(ferr)
+			}
+
+			writer := io.Writer(file)
+			_, werr := writer.Write([]byte(res))
+
+			if werr != nil {
+				panic(werr)
+			}
+
+			file.Close()
+		}
 	}
 }
