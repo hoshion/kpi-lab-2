@@ -26,14 +26,22 @@ func main() {
 	if *fileExpression == "" {
 		expression = *inputExpression
 	} else {
-		//var r io.Reader
-		//r, ferr := os.Open(*fileExpression)
-		//
-		//if ferr != nil {
-		//	panic("Error with file")
-		//}
+		file, ferr := os.Open(*fileExpression)
 
-		expression = "4 2 - 3 * 5 +"
+		if ferr != nil {
+			panic("Error with file")
+		}
+
+		reader := io.Reader(file)
+		buffer, rerr := io.ReadAll(reader)
+
+		if rerr != nil {
+			panic(rerr)
+		}
+
+		file.Close()
+
+		expression = string(buffer)
 	}
 
 	// TODO: Change this to accept input from the command line arguments as described in the task and
