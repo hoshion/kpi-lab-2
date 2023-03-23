@@ -1,12 +1,37 @@
 package kpi_lab_2
 
-// ComputeHandler should be constructed with input io.Reader and output io.Writer.
-// Its Compute() method should read the expression from input and write the computed result to the output.
+import (
+	"fmt"
+	"io"
+)
+
 type ComputeHandler struct {
-	// TODO: Add necessary fields.
+	Input  io.Reader
+	Output io.Writer
 }
 
 func (ch *ComputeHandler) Compute() error {
-	// TODO: Implement.
+	buffer, rerr := io.ReadAll(ch.Input)
+	if rerr != nil {
+		return rerr
+	}
+
+	expression := string(buffer)
+	res, err := PostfixToInfix(expression)
+
+	if err != nil {
+		return err
+	}
+
+	if ch.Output == nil {
+		fmt.Println(res)
+	} else {
+		_, werr := ch.Output.Write([]byte(res))
+
+		if werr != nil {
+			return werr
+		}
+	}
+
 	return nil
 }
