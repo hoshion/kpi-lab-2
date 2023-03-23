@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io"
 	lib "kpi_lab_2"
 	"os"
+	"strings"
 )
 
 var (
@@ -21,59 +21,35 @@ func main() {
 		panic("Error with parameters, should only be one of two - file or expression")
 	}
 
-	var expression string
+	var reader io.Reader
+	var writer io.Writer = nil
 
-	if *fileExpression == "" {
-		expression = *inputExpression
+	if *inputExpression != "" {
+		reader = strings.NewReader(*inputExpression)
 	} else {
 		file, ferr := os.Open(*fileExpression)
 
 		if ferr != nil {
-			panic("Error with file")
+			panic(ferr)
 		}
 
-		reader := io.Reader(file)
-		buffer, rerr := io.ReadAll(reader)
-
-		if rerr != nil {
-			panic(rerr)
-		}
-
-		file.Close()
-
-		expression = string(buffer)
+		reader = io.Reader(file)
 	}
 
-	// TODO: Change this to accept input from the command line arguments as described in the task and
-	//       output the results using the ComputeHandler instance.
-	//       handler := &lab2.ComputeHandler{
-	//           Input: {construct io.Reader according the command line parameters},
-	//           Output: {construct io.Writer according the command line parameters},
-	//       }
-	//       err := handler.Compute()
+	if *outputExpression != "" {
+		file, ferr := os.Create(*outputExpression)
 
-	res, err := lib.PostfixToInfix(expression)
+		if ferr != nil {
+			panic(ferr)
+		}
+
+		writer = io.Writer(file)
+	}
+
+	handler := lib.ComputeHandler{Input: reader, Output: writer}
+	err := handler.Compute()
+
 	if err != nil {
 		panic(err)
-	} else {
-		if *outputExpression == "" {
-			fmt.Println(res)
-		} else {
-			fmt.Println(*outputExpression)
-			file, ferr := os.Create(*outputExpression)
-			fmt.Println(file)
-			if ferr != nil {
-				panic(ferr)
-			}
-
-			writer := io.Writer(file)
-			_, werr := writer.Write([]byte(res))
-
-			if werr != nil {
-				panic(werr)
-			}
-
-			file.Close()
-		}
 	}
 }
