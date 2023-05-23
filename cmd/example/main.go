@@ -23,33 +23,39 @@ func main() {
 
 	var reader io.Reader
 	var writer io.Writer = nil
+	var readFile *os.File
+	var writeFile *os.File
+	var err error
 
 	if *inputExpression != "" {
 		reader = strings.NewReader(*inputExpression)
 	} else {
-		file, ferr := os.Open(*fileExpression)
+		readFile, err = os.Open(*fileExpression)
 
-		if ferr != nil {
-			panic(ferr)
+		if err != nil {
+			panic(err)
 		}
 
-		reader = io.Reader(file)
+		reader = io.Reader(readFile)
 	}
 
 	if *outputExpression != "" {
-		file, ferr := os.Create(*outputExpression)
+		writeFile, err = os.Create(*outputExpression)
 
-		if ferr != nil {
-			panic(ferr)
+		if err != nil {
+			panic(err)
 		}
 
-		writer = io.Writer(file)
+		writer = io.Writer(writeFile)
 	}
 
 	handler := lib.ComputeHandler{Input: reader, Output: writer}
-	err := handler.Compute()
+	err = handler.Compute()
 
 	if err != nil {
 		panic(err)
 	}
+
+	defer readFile.Close()
+	defer writeFile.Close()
 }
